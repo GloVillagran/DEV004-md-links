@@ -1,85 +1,78 @@
 import { existsSync} from 'node:fs';
 import { readFile, readdirSync } from 'node:fs';
-import { resolve as resolvePath} from 'node:path';
+import { resolve, extname, isAbsolute } from 'node:path';
 import { statSync } from 'node:fs';
 
+// valida si existe la ruta
+const validatePath = (path) => existsSync(path);
+
+ // ver si la ruta es absoluta, si es relativa se convierte
+const resolveRelativePath = (path) => {
+   if(isAbsolute(path)) /* <is absolute path?> */ {
+    return path;
+   } else {
+    return resolve(path);
+   }
+}
+//valida si es directorio
+const validateDirectory = (absolutePath) => statSync(absolutePath).isDirectory();
+
+//valida si es un archivo md
+const validateMDFile = (filePath) => extname(filePath) === ".md"; 
+
+//lee el archivo y busca los links
+const readFileAndSearchLinks = (filePath) => {
+  readFile(filePath, 'utf-8', (err, result) => {
+    if (err) {
+      console.error(err);
+      return;
+    } else {
+      console.log({filePath, result})
+    }
+  })
+}
+//lista archivos del directorio
+const listFilesFromDirectory = (absolutePath) => {
+     const files = readdirSync(absolutePath) 
+     files.forEach(file => {
+       const path = `${absolutePath}/${file}` // concatenamos el path del directorio con el nombre del archivo/directorio
+      if(validateDirectory(path)){
+        listFilesFromDirectory(path); // recursividad
+      } else if (validateMDFile(path)) { // si es md se lee el archivo
+        readFileAndSearchLinks(path)
+      } 
+  })
+}
 
 export const mdLinks = (path, options) => {
   return new Promise((resolve, reject) => { 
-    // identificar si la ruta exite.
-    if (!existsSync(path)) {
-      // si la ruta no existe rechaza la promesa
+    if (!validatePath(path)) /* <Path exists> */ {
       reject(new Error('dont exist path'));
       return;
-      
-      // si es un directorio list to files, filtrar los archivos md
     } 
     console.log('path exists');
-    // ver si la ruta es absoluta, si es relativa convertir
-    const absolutePath = resolvePath(path); 
+    const absolutePath = resolveRelativePath(path); /* <is abosolute path?> */
     console.log('path absolute', absolutePath);
 
       // probar si es un directorio o un archivo
-    if(statSync(absolutePath).isDirectory()){
-      console.log('is directory')
-      // leer archivos del directorio
-     const files = readdirSync(absolutePath) 
-     console.log(files) //lista archivos directorios
-     files.forEach(file => {
-       console.log(file)
-       // lee los archivos del directorio y su contenido
-      readFile(`${absolutePath}/${file}`, 'utf-8', (err, result) => {
-        if (err) {
-          console.error(err);
-          return;
-        }
-        // otherwise log contents
-        console.log(result.toString());
-         // console.log(result); // comentar para hacer test
-        
-        // console.log('file', file)
-       
-      })
-  })
+    if(validateDirectory(absolutePath)) /* <is directory?> */ {
+      console.log('is directory');
+       //leemos directorio
+       listFilesFromDirectory(absolutePath);
+       resolve('ok directory')
+    } else if(validateMDFile(absolutePath)) /*<is md?>*/ {
+      console.log('is md file');
+      resolve('ok file')
     } else {
-      console.log('is file');
+      reject('invalid path');
     }
-
-    resolve()
   })
 }
-const path = './md-files';
+const path = './md-files/';
 // const path = '/Users/gloriavillagranrojas/Laboratoria DEV004/MDLinks/DEV004-md-links';
 
 
 mdLinks(path, "asdasd") // consumiendo la promesa
-.then(d => console.log(d))
-.catch(e => console.log(e))
+.then(result => console.log(result))
+.catch(error => console.log(error))
 
-
-
-
-
-
-// Si es ruta absoluta
-/* export const callback = (err, result) => {
-    const absolute = resolve(path); // resuelve si la ruta es relativa y la convierte en absoluta
-    console.log('path absolute', absolute);
-
-    if(err && err.code == 'EISDIR') {
-        console.log(err)
-        console.log('leyendo directorio')
-
-        // leer si es directorio
-        readdir(path, (err, files) => {
-            console.log(err, files)
-            files.forEach(file => {
-                console.log(file)
-                readFile(file, 'utf-8', (err, result) => console.log(result))
-            })
-        } )
-    } else {
-        console.log('contenido del archivo', result)
-    }
-}
-readFile(path, 'utf8', callback); */
