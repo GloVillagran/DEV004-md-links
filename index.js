@@ -4,8 +4,9 @@ import {
   validateDirectory,
   validateMDFile,
   readFileAndSearchLinks,
-  listFilesFromDirectory
+  listFilesFromDirectory,
 } from './api.js'
+import { validateLinks } from './validateLinks.js';
 
 export const mdLinks = (path, options) => {
   return new Promise((resolve, reject) => {
@@ -21,21 +22,44 @@ export const mdLinks = (path, options) => {
     if (validateDirectory(absolutePath)) /* <is directory?> */ {
       console.log('is directory');
       //leemos directorio
-      resolve(Promise.all(listFilesFromDirectory(absolutePath)))
+
+       if(options.validate) {
+       const linksWithValidation = listFilesFromDirectory(absolutePath).then(links => validateLinks(links))
+        resolve(linksWithValidation);
+       } else {
+        resolve( listFilesFromDirectory(absolutePath))
+       }
+      
     } else if (validateMDFile(absolutePath)) /*<is md?>*/ {
       console.log('is md file');
-      resolve(readFileAndSearchLinks(absolutePath));
-    } else {
-      console.log('aca')
+
+      if(options.validate) {
+        const linksWithValidation = readFileAndSearchLinks(absolutePath).then(links => validateLinks(links))
+         resolve(linksWithValidation);
+        }  else {
+          resolve(readFileAndSearchLinks(absolutePath))
+        }
+     
+    } 
+    else {
       reject(new Error('invalid path'));
     }
   })
+
+
 }
-const path = './md-files/';
-// const path = '/Users/gloriavillagranrojas/Laboratoria DEV004/MDLinks/DEV004-md-links';
+// const path = './md-files/';
+// const path = '/Users/gloriavillagranrojas/Laboratoria DEV004/MDLinks/DEV004-md-links/md-files';
+const path = '/Users/gloriavillagranrojas/Laboratoria DEV004/MDLinks/DEV004-md-links/md-files/prueba-Links.md';
+// const path = '/Users/gloriavillagranrojas/Laboratoria DEV004/MDLinks/DEV004-md-links/README.md';
+
 
 // para pruebas con node index.js
-mdLinks(path, "asdasd") // consumiendo la promesa
+mdLinks(path, { validate: false })
+  .then((links) => console.log ('result', links))
+  .catch((error) => console.log(error));
+
+/* mdLinks(path, "asdasd") // consumiendo la promesa
   .then(result => console.log('resultado mdlinks', result))
-  .catch(error => console.log(error))
+  .catch(error => console.log(error)) */
 

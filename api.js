@@ -2,6 +2,8 @@ import { existsSync, readdirSync} from 'node:fs';
 import { readFile } from 'node:fs/promises';
 import { resolve, extname, isAbsolute } from 'node:path';
 import { statSync } from 'node:fs';
+import { searchLinks } from './md-links.js';
+import axios from 'axios';
 
 
 // valida si existe la ruta
@@ -26,8 +28,11 @@ export const validateMDFile = (filePath) => extname(filePath) === ".md";
 export const readFileAndSearchLinks = (filePath) => {
   return readFile(filePath, 'utf-8').then(
     result =>  ({filePath, result}),
-  )
-  .catch(err => {throw new Error("error reading file")}) 
+  ) .then(({filePath, result}) => searchLinks(result, filePath) //para buscar los links
+
+  ) 
+  .catch(err => {throw new Error("error reading file")});
+
 };
 
 //lista archivos del directorio
@@ -46,5 +51,5 @@ export const listFilesFromDirectory = (absolutePath) => {
      } 
  })
 
- return readFilePromises;
+ return Promise.all(readFilePromises);
 };
