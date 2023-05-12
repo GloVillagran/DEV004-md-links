@@ -17,6 +17,9 @@
   "scripts": {
     "test": "jest --coverage"
   },
+  "bin": {
+    "DEV004-md-link": "./cli.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/GloVillagran/DEV004-md-links.git"

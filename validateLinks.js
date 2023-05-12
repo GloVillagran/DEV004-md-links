@@ -1,4 +1,4 @@
-import axios from "axios" // devuelve un array de pro
+import axios from "axios" // devuelve un array de promesas
 
 export const validateLinks = (links) => {
     // console.log('flatted', links.flat(1)) // para juntar todo los arreglos en un mismo nivel (tenia arreglos dentro de arreglos)

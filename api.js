@@ -1,9 +1,9 @@
-import { existsSync, readdirSync} from 'node:fs';
+import { existsSync, readdirSync, stat, Stats} from 'node:fs';
 import { readFile } from 'node:fs/promises';
 import { resolve, extname, isAbsolute } from 'node:path';
 import { statSync } from 'node:fs';
 import { searchLinks } from './md-links.js';
-import axios from 'axios';
+
 
 
 // valida si existe la ruta
@@ -53,3 +53,18 @@ export const listFilesFromDirectory = (absolutePath) => {
 
  return Promise.all(readFilePromises);
 };
+
+//calculo stats
+export const isStats = (absolutePath => {
+  stat(absolutePath, (err, stats) => {
+    if (err) {
+      console.error(err);
+      return;
+    }
+  console.log(stat)
+    stats.isFile(); // true
+    stats.isDirectory(); // false
+    stats.isSymbolicLink(); // false
+    stats.size; 
+  })
+})

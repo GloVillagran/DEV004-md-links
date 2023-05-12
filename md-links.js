@@ -1,4 +1,3 @@
-
 export const searchLinks = (fileContents, filePath) => {
     const string = fileContents
     let regex = /(?=\[(!\[.+?\]\(.+?\)|.+?)]\((https:\/\/[^\)]+)\))/gi
@@ -10,3 +9,5 @@ export const searchLinks = (fileContents, filePath) => {
     
     return links
 }
+
+
