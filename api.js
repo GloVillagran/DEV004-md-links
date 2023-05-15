@@ -54,17 +54,3 @@ export const listFilesFromDirectory = (absolutePath) => {
  return Promise.all(readFilePromises);
 };
 
-//calculo stats
-export const isStats = (absolutePath => {
-  stat(absolutePath, (err, stats) => {
-    if (err) {
-      console.error(err);
-      return;
-    }
-  console.log(stat)
-    stats.isFile(); // true
-    stats.isDirectory(); // false
-    stats.isSymbolicLink(); // false
-    stats.size; 
-  })
-})

@@ -15,20 +15,20 @@ export const mdLinks = (path, options) => {
       reject(new Error('Dont Exist Path'));
       return;
     }
-    console.log('Path Exists');
+    //console.log('Path Exists');
     const absolutePath = resolveRelativePath(path); /* <is abosolute path?> */
-    console.log('Path Absolute', absolutePath);
+    //console.log('Path Absolute', absolutePath);
 
     let links = []
     // probar si es un directorio o un archivo
     if (validateDirectory(absolutePath)) /* <is directory?> */ {
-      console.log('Is Directory');
+      //console.log('Is Directory');
       //leemos directorio
 
       links = listFilesFromDirectory(absolutePath);
 
     } else if (validateMDFile(absolutePath)) /*<is md?>*/ {
-      console.log('Is Md File');
+      //console.log('Is Md File');
 
       links = readFileAndSearchLinks(absolutePath);
 
@@ -57,14 +57,14 @@ export const mdLinks = (path, options) => {
 
 // const path = './md-files/';
 // const path = '/Users/gloriavillagranrojas/Laboratoria DEV004/MDLinks/DEV004-md-links/md-files';
-const path = '/Users/gloriavillagranrojas/Laboratoria DEV004/MDLinks/DEV004-md-links/md-files/prueba-Links.md';
+// const path = '/Users/gloriavillagranrojas/Laboratoria DEV004/MDLinks/DEV004-md-links/md-files/prueba-Links.md';
 // const path = '/Users/gloriavillagranrojas/Laboratoria DEV004/MDLinks/DEV004-md-links/README.md';
 
 
 
-mdLinks(path, { validate: true, stats: false })
+/* mdLinks(path, { validate: true, stats: false })
   .then((links) => console.log('result', links))
-  .catch((error) => console.log(error));
+  .catch((error) => console.log(error)); */
 
 // para pruebas con node index.js
 /* mdLinks(path, "asdasd") // consumiendo la promesa

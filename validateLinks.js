@@ -9,6 +9,6 @@ export const validateLinks = (links) => {
     .catch (result => ({...link, status: result.status, message: 'error'}))
    });
 
-   console.log('result validation', result)
+  //console.log('result validation', result) // muestra array de promesas pendientes
     return Promise.all(result);
 }

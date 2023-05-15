@@ -18,7 +18,7 @@
     "test": "jest --coverage"
   },
   "bin": {
-    "DEV004-md-link": "./cli.js"
+    "md-link": "./cli.js"
   },
   "repository": {
     "type": "git",
@@ -35,7 +35,7 @@
   "homepage": "https://github.com/GloVillagran/DEV004-md-links#readme",
   "dependencies": {
     "axios": "^1.4.0",
-    "chalk": "^4.1.2",
+    "chalk": "^5.2.0",
     "eslint": "^8.39.0"
   },
   "devDependencies": {
