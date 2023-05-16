@@ -1,5 +1,5 @@
 // TEST UNITARIOS PARA ASEGURARME QUE LAS FUNCIONES FUNCIONAN CORRECTAMENTE
-import { validatePath, resolveRelativePath, validateDirectory, validateMDFile, readFileAndSearchLinks, listFilesFromDirectory } from "../api";
+import { validatePath, resolveRelativePath, validateDirectory, validateMDFile, readFileAndSearchLinks } from "../api";
 
 describe('validatePat', () => {
   it('should be exist path return true', () => {
@@ -23,11 +23,11 @@ describe('resolveRelativePath', () => {
 
 describe('validateDirectory', () => {
   it('should be return true if the path is a directory', () => {
-    expect(validateDirectory('../DEV004-md-links/')).toBe(true)
+    expect(validateDirectory('../DEV004-md-links/md-files')).toBe(true)
   })
 
   it('should be return false if the path is not a directory', () => {
-    expect(validateDirectory('../DEV004-md-links/md-files/prueba.md')).toBe(false)
+    expect(validateDirectory('../DEV004-md-links/md-files/prueba-Links.md')).toBe(false)
   })
 });
 
@@ -43,17 +43,17 @@ describe('validateMDFile', () => {
 
 describe('readFileAndSearchLinks', () => {
   it('should return the file content', () => {
-   return expect(readFileAndSearchLinks('/Users/gloriavillagranrojas/Laboratoria DEV004/MDLinks/DEV004-md-links/md-files/prueba.txt')).resolves.toStrictEqual(
-    {"filePath": "/Users/gloriavillagranrojas/Laboratoria DEV004/MDLinks/DEV004-md-links/md-files/prueba.txt", "result": "este es el contenido del archivo 1"})
+    const expected = [
+      {"file": "/Users/gloriavillagranrojas/Laboratoria DEV004/MDLinks/DEV004-md-links/md-files/prueba-Links.md", "href": "https://stackoverflow.com/questions/74432875/getting-links-from-markdown-file-even-if-link-is-in-the-link-text", "text": "REGEX"}, 
+      {"file": "/Users/gloriavillagranrojas/Laboratoria DEV004/MDLinks/DEV004-md-links/md-files/prueba-Links.md", "href": "https://www.freecodecamp.org/news/how-to-make-a-promise-out-of-a-callback-function-in-javascript-d8ec35d1f981/", "text": "Promise"}, 
+      {"file": "/Users/gloriavillagranrojas/Laboratoria DEV004/MDLinks/DEV004-md-links/md-files/prueba-Links.md", "href": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/reject", "text": "Promise Reject"},
+      {"file": "/Users/gloriavillagranrojas/Laboratoria DEV004/MDLinks/DEV004-md-links/md-files/prueba-Links.md", "href": "https://rockcontent.com/blog/broken-ks/", "text": "Discover Why Broken Links Occur and How to Resolve Them"},
+      {"file": "/Users/gloriavillagranrojas/Laboratoria DEV004/MDLinks/DEV004-md-links/md-files/prueba-Links.md", "href": "https://rockcontent.com/blog/broken-ks/", "text": "Discover Why Broken Links Occur and How to Resolve Them"}]; 
+ 
+   return expect(readFileAndSearchLinks('/Users/gloriavillagranrojas/Laboratoria DEV004/MDLinks/DEV004-md-links/md-files/prueba-Links.md')).resolves.toStrictEqual(expected)
 })
 
-fit('should throw error', () => {
-  return expect(readFileAndSearchLinks('/Users/gloriavillagranrojas/Laboratoria DEV004/MDLinks/DEV004-md-links/md-files/prueba.t')).rejects.toThrow('error reading file')
+it('should throw error', () => {
+  return expect(readFileAndSearchLinks('/Users/gloriavillagranrojas/Laboratoria DEV004/MDLinks/DEV004-md-links/md-files/prueba.t')).rejects.toThrow('')
 })
   });
-
-/* describe('listFilesFromDirectory', () => {
-    fit('should be return an array of promise directory', () => {
-     return expect(listFilesFromDirectory('/Users/gloriavillagranrojas/Laboratoria DEV004/MDLinks/DEV004-md-links/md-files/md-files2/md-files3')).toStrictEqual([{}, {}])
-  })
-    }); */

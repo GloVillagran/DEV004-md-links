@@ -1,1 +1,1 @@
-este es el contenido del archivo 1
+[Promise](https://www.freecodecamp.org/news/how-to-make-a-promise-out-of-a-callback-function-in-javascript-d8ec35d1f981/). Función callback.

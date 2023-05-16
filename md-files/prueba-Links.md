@@ -9,3 +9,10 @@ este es el contenido del archivo 1
 
 Acerca de promsesas.
 
+
+
+/**---LINKS ROTOS--- */
+
+[Discover Why Broken Links Occur and How to Resolve Them](https://rockcontent.com/blog/broken-ks/)
+[Discover Why Broken Links Occur and How to Resolve Them](https://rockcontent.com/blog/broken-ks/)
+

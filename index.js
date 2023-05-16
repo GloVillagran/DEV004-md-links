@@ -23,9 +23,8 @@ export const mdLinks = (path, options) => {
     // probar si es un directorio o un archivo
     if (validateDirectory(absolutePath)) /* <is directory?> */ {
       //console.log('Is Directory');
-      //leemos directorio
 
-      links = listFilesFromDirectory(absolutePath);
+      links = listFilesFromDirectory(absolutePath).then(result => flattenDeep(result));
 
     } else if (validateMDFile(absolutePath)) /*<is md?>*/ {
       //console.log('Is Md File');
@@ -37,23 +36,23 @@ export const mdLinks = (path, options) => {
       return
     }
 
-    if (options.validate) {
+    if (options && options.validate) { //null safe, valido que exista el objeto(options), y luego la propiedad(validate)
       links = links.then(linksToValidate => validateLinks(linksToValidate))
     }
 
-    if(options.stats){
+    if(options && options.stats){ 
       const stats = links.then(linksToCalculate => calculateStats(linksToCalculate, options.validate));
       resolve(stats);
     } else {
       resolve(links)
     }
-
-
   })
 }
 
-
-
+//https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/flat
+const flattenDeep = (arr1) => {
+  return arr1.reduce((acc, val) => Array.isArray(val) ? acc.concat(flattenDeep(val)) : acc.concat(val), []);
+}
 
 // const path = './md-files/';
 // const path = '/Users/gloriavillagranrojas/Laboratoria DEV004/MDLinks/DEV004-md-links/md-files';
@@ -61,13 +60,8 @@ export const mdLinks = (path, options) => {
 // const path = '/Users/gloriavillagranrojas/Laboratoria DEV004/MDLinks/DEV004-md-links/README.md';
 
 
-
 /* mdLinks(path, { validate: true, stats: false })
   .then((links) => console.log('result', links))
   .catch((error) => console.log(error)); */
 
-// para pruebas con node index.js
-/* mdLinks(path, "asdasd") // consumiendo la promesa
-  .then(result => console.log('resultado mdlinks', result))
-  .catch(error => console.log(error)) */
 

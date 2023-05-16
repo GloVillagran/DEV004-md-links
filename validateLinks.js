@@ -1,14 +1,15 @@
 import axios from "axios" // devuelve un array de promesas
 
 export const validateLinks = (links) => {
-    // console.log('flatted', links.flat(1)) // para juntar todo los arreglos en un mismo nivel (tenia arreglos dentro de arreglos)
-   const result = links.flat(1).map((link) => {
+   const result = links.map((link) => {
+    
     return axios
     .get(link.href) //le hace la petición http al link
     .then (result => ({...link, status: result.status, message: 'Ok'}))
-    .catch (result => ({...link, status: result.status, message: 'error'}))
+    .catch(error => {
+      return {...link, status: error.response.status, message: 'Fail', }
+    })
    });
-
   //console.log('result validation', result) // muestra array de promesas pendientes
     return Promise.all(result);
 }

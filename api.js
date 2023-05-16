@@ -4,8 +4,6 @@ import { resolve, extname, isAbsolute } from 'node:path';
 import { statSync } from 'node:fs';
 import { searchLinks } from './md-links.js';
 
-
-
 // valida si existe la ruta
 export const validatePath = (path) => existsSync(path);
 
@@ -18,6 +16,7 @@ export const resolveRelativePath = (path) => {
     return resolve(path);
    }
 };
+
 //valida si es directorio
 export const validateDirectory = (absolutePath) => statSync(absolutePath).isDirectory();
 
@@ -45,7 +44,7 @@ export const listFilesFromDirectory = (absolutePath) => {
      if(validateDirectory(path)){
        const result = listFilesFromDirectory(path); // recursividad
        readFilePromises = readFilePromises.concat(result)
-       console.log(`resultado directorio ${path}`, readFilePromises)
+       // console.log(`resultado directorio ${path}`, readFilePromises)
      } else if (validateMDFile(path)) { // si es md se lee el archivo
        readFilePromises.push(readFileAndSearchLinks(path)) // tiene que retornar un array de promesas o archivos??. Si es de promesas se agrega readFileAndSearchLinks antes de path
      } 
