@@ -62,10 +62,6 @@ Objetivos aplicados en este proyecto.
 
 - [X] **Objetos (key, value)**
 
-  <details><summary>Links</summary><p>
-
-  * [Objetos en JavaScript]
-
 - [X] **Uso de condicionales (if-else, switch, operador ternario, lógica booleana)**
 
   * Estructuras condicionales y repetitivas
