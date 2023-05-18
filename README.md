@@ -142,7 +142,7 @@ Objetivos aplicados en este proyecto.
 
 Mediante npm, colocando en la terminal:
 
-npm install gloVillagran/DEV004-md-links
+npm i glovillagran-mdlinks
 
 
 ## 6. Uso
